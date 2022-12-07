@@ -24,21 +24,60 @@ def getCommonLetter(input):
     commonLetter = ''.join(set(firstCompartment).intersection(secondCompartment))
     return commonLetter
 
-initializePriorities()
+def getBadgeWithList(rucksackList):
+    return getBadge(rucksackList[0], rucksackList[1], rucksackList[2])
 
-f = open("3/input.txt")
-lines = f.readlines()
+def getBadge(firstRucksack, secondRucksack, thirdRucksack):
+    badge = ''.join(set(firstRucksack).intersection(secondRucksack).intersection(thirdRucksack))
+    return badge
 
-sum = 0
+def getAnswerPartOne():
+    initializePriorities()
 
-for line in lines:
-    # Get the common letter of the current line
-    commonLetter = getCommonLetter(line)
+    f = open("3/input_part_1.txt")
+    lines = f.readlines()
 
-    # Add the common letter value to the total sum
-    sum += values[commonLetter]
+    sum = 0
 
-# Close the reader
-f.close()
+    for line in lines:
+        # Get the common letter of the current line
+        commonLetter = getCommonLetter(line)
 
-print(f'Total priority: {sum}')
+        print(f'Common: {commonLetter}')
+
+        # Add the common letter value to the total sum
+        sum += values[commonLetter]
+
+    # Close the reader
+    f.close()
+
+    print(f'Total priority: {sum}')
+
+def getAnswerPartTwo():
+    initializePriorities()
+
+    f = open("3/input_part_1.txt")
+    lines = f.readlines()
+
+    sum = 0
+    index = 0
+    rucksackList = []
+
+    for line in lines:
+        # Add one to the current index
+        index += 1
+
+        if index % 3 == 0:
+            # Remove the new line operator
+            rucksackList.append(line.replace('\n', ''))
+
+            badge = getBadgeWithList(rucksackList)
+
+            sum += values[badge]
+            rucksackList.clear()
+        else:
+            rucksackList.append(line)
+
+    print(f'Answer part 2: {sum}')
+
+getAnswerPartTwo()
